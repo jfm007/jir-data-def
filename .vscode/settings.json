@@ -1,0 +1,10 @@
+{
+  "eslint.autoFixOnSave": true,
+  "files.autoSave":"onWindowChange",
+	"editor.fontSize": 15,
+  "editor.tabSize": 2,
+  "workbench.iconTheme": "vs-minimal",
+  "workbench.colorTheme": "Monokai",
+  "terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+  "git.ignoreLimitWarning": true,
+}
