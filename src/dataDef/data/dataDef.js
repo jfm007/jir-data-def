@@ -10,7 +10,7 @@ const {
 const isNotNilorEmpty = R.pipe(RA.isNilOrEmpty, R.not);
 const { Def } = require('./def');
 const { FieldArrayDef } = require('./fieldArrayDef');
-const { ObjectDef } = require('./ObjectDef');
+const { ObjectDef } = require('./objectDef');
 
 /**
  * Factory to create obj for DataDef
