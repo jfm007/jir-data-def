@@ -110,13 +110,19 @@ const InputFieldDef = stampit(PathAndNameObj, InputOptionsDef, InputBooleanDef, 
      * used to interpret the given Json Schema type to input type
      * @param {*} type
      */
-    getDataTypeFromSchema({type}){
+    getDataTypeFromSchema({type, items}){
       if(type === JsFieldTypes.STRING) return STRING;
       if(type === JsFieldTypes.NUMBER || type === JsFieldTypes.INTEGER)
         return NUMBER;
       if(type === JsFieldTypes.BOOLEAN)
         return BOOLEAN;
-      if(RA.isNilOrEmpty(type) || R.is(Array, type))
+      if(type === JsFieldTypes.ARRAY || RA.isNonEmptyArray(items)){
+        return Maybe.of(items)
+          .mapS(R.ifElse(R.any(R.propEq('type', JsFieldTypes.STRING)),
+            R.always(STRING), R.pipe(R.head, InputFieldDef.getDataTypeFromSchema)))
+          .orElse(STRING).join();
+      }
+      if(RA.isNilOrEmpty(type))
         return STRING;
       throw new Error('Object type property is not suitable for input field');
     },

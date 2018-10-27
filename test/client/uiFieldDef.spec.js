@@ -1,7 +1,9 @@
 const expect = require('chai').expect;
 const R = require('ramda');
 const { InputOption, InputFieldDef, DataDef } = require('./utils');
-
+const {
+  JsFieldTypes
+} = require('./utils');
 describe('UIFieldDef related functionalities', () => {
   describe('the createInputFieldDef method', () => {
     const { createInputFieldDef } = InputFieldDef;
@@ -96,6 +98,31 @@ describe('UIFieldDef related functionalities', () => {
             dataType: 'boolean'
           })
         )).to.eql(true);
+      });
+    });
+    describe('getDataTypeFromSchema', ()=>{
+      it('should create correct data type from the given schema', ()=>{
+        expect(InputFieldDef
+          .getDataTypeFromSchema({
+            items: [{type: JsFieldTypes.INTEGER}]
+          }))
+          .to.eql('number');
+        expect(InputFieldDef
+          .getDataTypeFromSchema({
+            items: [{ type: JsFieldTypes.BOOLEAN },
+              {type: JsFieldTypes.INTEGER}]
+          })).to.eql('boolean');
+        expect(InputFieldDef
+          .getDataTypeFromSchema({
+            type: JsFieldTypes.ARRAY
+          })).to.eql('string');
+        expect(InputFieldDef
+          .getDataTypeFromSchema({
+            tems: [
+              { type: JsFieldTypes.BOOLEAN },
+              {type: JsFieldTypes.STRING}
+            ]
+          })).to.eql('string');
       });
     });
   });
