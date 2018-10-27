@@ -91,7 +91,7 @@ const InputBooleanDef = stampit()
  * the definition for the input
  */
 const InputFieldDef = stampit(PathAndNameObj, InputOptionsDef, InputBooleanDef, UiState)
-  .init(function ({ dataType = 'string', format = InputValueFormat.text, control, label,
+  .init(function ({ schema, dataType = 'string', format = InputValueFormat.text, control, label,
     nullable = true, placeholder, description, size = 40 }) {
     this.id = uuid.v4();
     this.dataType = dataType;
@@ -104,6 +104,7 @@ const InputFieldDef = stampit(PathAndNameObj, InputOptionsDef, InputBooleanDef, 
     this.size = size;
     //if(this.dataType === 'boolean'
     if (!control && !this.control) this.control = Control.Input;
+    this.schema = schema;
   })
   .statics({
     /**
@@ -163,7 +164,7 @@ const InputFieldDef = stampit(PathAndNameObj, InputOptionsDef, InputBooleanDef, 
             options: schema.enums,
             description,
             multiple: R.propEq('type', 'array', schema),
-
+            schema
           };
         })
         .orElse(null).join();
