@@ -135,6 +135,16 @@ describe('UIFieldDef related functionalities', () => {
           multiple: true,
           name: 'test'
         });
+        const selectProps =
+          getCreationPropsFromSchema({ type: 'string', name: 'test', enums: ['a', 'ba', 'ca'] });
+        expect(selectProps).to.contains({
+          dataType: 'string',
+          format: 'text',
+          multiple: false,
+          name: 'test',
+        });
+        expect(selectProps.options).to.eql(['a', 'ba', 'ca']);
+        expect(InputFieldDef(selectProps).control).to.eq('select');
       });
     });
   });
