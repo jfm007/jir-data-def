@@ -100,17 +100,17 @@ describe('UIFieldDef related functionalities', () => {
         )).to.eql(true);
       });
     });
-    describe('getDataTypeFromSchema', ()=>{
-      it('should create correct data type from the given schema', ()=>{
+    describe('getDataTypeFromSchema', () => {
+      it('should create correct data type from the given schema', () => {
         expect(InputFieldDef
           .getDataTypeFromSchema({
-            items: [{type: JsFieldTypes.INTEGER}]
+            items: [{ type: JsFieldTypes.INTEGER }]
           }))
           .to.eql('number');
         expect(InputFieldDef
           .getDataTypeFromSchema({
             items: [{ type: JsFieldTypes.BOOLEAN },
-              {type: JsFieldTypes.INTEGER}]
+              { type: JsFieldTypes.INTEGER }]
           })).to.eql('boolean');
         expect(InputFieldDef
           .getDataTypeFromSchema({
@@ -120,9 +120,21 @@ describe('UIFieldDef related functionalities', () => {
           .getDataTypeFromSchema({
             tems: [
               { type: JsFieldTypes.BOOLEAN },
-              {type: JsFieldTypes.STRING}
+              { type: JsFieldTypes.STRING }
             ]
           })).to.eql('string');
+      });
+    });
+    describe('getCreationPropsFromSchema', () => {
+      const { getCreationPropsFromSchema } = InputFieldDef;
+      it('should create the props properly', () => {
+        const props = getCreationPropsFromSchema({ type: 'array', name: 'test' });
+        expect(props).to.contains({
+          dataType: 'string',
+          format: 'text',
+          multiple: true,
+          name: 'test'
+        });
       });
     });
   });

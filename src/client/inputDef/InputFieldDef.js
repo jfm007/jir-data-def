@@ -161,7 +161,8 @@ const InputFieldDef = stampit(PathAndNameObj, InputOptionsDef, InputBooleanDef, 
             dataType: getDataTypeFromSchema(schema),
             format: getFormatFromSchema(schema),
             options: schema.enums,
-            description
+            description,
+            multiple: R.propEq('type', 'array', schema)
           };
         })
         .orElse(null).join();
