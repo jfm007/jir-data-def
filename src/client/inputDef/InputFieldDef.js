@@ -43,11 +43,11 @@ const InputOption = stampit()
         (val) => ({ val }))
       )
       .mapS(R.cond([
-        [hasAllProps(R.__, ['key','val']), R.identity],
-        [notHasProp(R.__, 'key'), (opt)=>{
-          return {...opt, key: opt.val};
+        [hasAllProps(R.__, ['key', 'val']), R.identity],
+        [notHasProp(R.__, 'key'), (opt) => {
+          return { ...opt, key: opt.val };
         }],
-        [notHasProp(R.__, 'val'), (opt)=>({...opt, val: opt.key})]
+        [notHasProp(R.__, 'val'), (opt) => ({ ...opt, val: opt.key })]
       ]))
       .orElse({}).join();
     Object.assign(this, opt);
@@ -64,7 +64,7 @@ exports.InputOption = InputOption;
  * the logic related to input with options information
  */
 const InputOptionsDef = stampit()
-  .init(function ({options = [], multiple = false, control}) {
+  .init(function ({ options = [], multiple = false, control }) {
     const opts = InputOption.createOptions(options);
     if (opts.length > 0
       || control === Control.Select
@@ -97,7 +97,7 @@ const InputFieldDef = stampit(PathAndNameObj, InputOptionsDef, InputBooleanDef, 
     this.dataType = dataType;
     this.format = format;
     this.label = label || startCaseUpper(this.name);
-    if(nullable)
+    if (nullable)
       this.nullable = nullable;
     this.placeholder = placeholder || this.label;
     this.description = description;
@@ -110,19 +110,19 @@ const InputFieldDef = stampit(PathAndNameObj, InputOptionsDef, InputBooleanDef, 
      * used to interpret the given Json Schema type to input type
      * @param {*} type
      */
-    getDataTypeFromSchema({type, items}){
-      if(type === JsFieldTypes.STRING) return STRING;
-      if(type === JsFieldTypes.NUMBER || type === JsFieldTypes.INTEGER)
+    getDataTypeFromSchema({ type, items }) {
+      if (type === JsFieldTypes.STRING) return STRING;
+      if (type === JsFieldTypes.NUMBER || type === JsFieldTypes.INTEGER)
         return NUMBER;
-      if(type === JsFieldTypes.BOOLEAN)
+      if (type === JsFieldTypes.BOOLEAN)
         return BOOLEAN;
-      if(type === JsFieldTypes.ARRAY || RA.isNonEmptyArray(items)){
+      if (type === JsFieldTypes.ARRAY || RA.isNonEmptyArray(items)) {
         return Maybe.of(items)
           .mapS(R.ifElse(R.any(R.propEq('type', JsFieldTypes.STRING)),
             R.always(STRING), R.pipe(R.head, InputFieldDef.getDataTypeFromSchema)))
           .orElse(STRING).join();
       }
-      if(RA.isNilOrEmpty(type))
+      if (RA.isNilOrEmpty(type))
         return STRING;
       throw new Error('Object type property is not suitable for input field');
     },
@@ -130,40 +130,50 @@ const InputFieldDef = stampit(PathAndNameObj, InputOptionsDef, InputBooleanDef, 
      *
      * @param {*} format
      */
-    getFormatFromSchema({format, type}){
+    getFormatFromSchema({ format, type }) {
       const { text, date, DTLocal, email, url, boolean, number } = InputValueFormat;
-      if(format === JsFormatOptions.EMAIL)
+      if (format === JsFormatOptions.EMAIL)
         return email;
-      else if(format === JsFormatOptions.DATE)
+      else if (format === JsFormatOptions.DATE)
         return date;
-      else if(format === JsFormatOptions.URI)
+      else if (format === JsFormatOptions.URI)
         return url;
-      else if(format === JsFormatOptions.DATETIME)
+      else if (format === JsFormatOptions.DATETIME)
         return DTLocal;
-      if(type === JsFieldTypes.NUMBER
+      if (type === JsFieldTypes.NUMBER
         || type === JsFieldTypes.INTEGER)
         return number;
-      else if(type === JsFieldTypes.BOOLEAN)
+      else if (type === JsFieldTypes.BOOLEAN)
         return boolean;
       return text;
     },
     /**
-     * used to create Input Field def from schema
-     * @param {*} schema
+     * used to get the options for creating fieldDef
+     * @param {*} schema 
      */
-    createFromSchema(schema){
+    getCreationPropsFromSchema(schema) {
       return Maybe.of(schema)
-        .mapS(schema=>{
+        .mapS(schema => {
           const { name, description } = schema;
           const { getDataTypeFromSchema, getFormatFromSchema } = InputFieldDef;
-          return InputFieldDef({
+          return {
             name,
             dataType: getDataTypeFromSchema(schema),
             format: getFormatFromSchema(schema),
             options: schema.enums,
             description
-          });
+          };
         })
+        .orElse(null).join();
+    },
+    /**
+     * used to create Input Field def from schema
+     * @param {*} schema
+     */
+    createFromSchema(schema) {
+      return Maybe.of(schema)
+        .mapS(InputFieldDef.getCreationPropsFromSchema)
+        .mapS(InputFieldDef)
         .orElse(null).join();
     },
     /**
@@ -171,11 +181,11 @@ const InputFieldDef = stampit(PathAndNameObj, InputOptionsDef, InputBooleanDef, 
      * @param {*} fieldDef (the dataDef )
      * @param {*} uiConfig
      */
-    createInputFieldDef(fieldDef, uiConfig){
+    createInputFieldDef(fieldDef, uiConfig) {
       return Maybe.of(fieldDef)
         .mapS(InputFieldDef.createFromSchema)
         .mapS(R.ifElse(
-          ()=>RA.isNilOrEmpty(uiConfig),
+          () => RA.isNilOrEmpty(uiConfig),
           R.identity,
           R.merge(R.__, uiConfig)
         ))
