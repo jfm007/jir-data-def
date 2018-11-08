@@ -100,17 +100,17 @@ describe('UIFieldDef related functionalities', () => {
         )).to.eql(true);
       });
     });
-    describe('getDataTypeFromSchema', ()=>{
-      it('should create correct data type from the given schema', ()=>{
+    describe('getDataTypeFromSchema', () => {
+      it('should create correct data type from the given schema', () => {
         expect(InputFieldDef
           .getDataTypeFromSchema({
-            items: [{type: JsFieldTypes.INTEGER}]
+            items: [{ type: JsFieldTypes.INTEGER }]
           }))
           .to.eql('number');
         expect(InputFieldDef
           .getDataTypeFromSchema({
             items: [{ type: JsFieldTypes.BOOLEAN },
-              {type: JsFieldTypes.INTEGER}]
+              { type: JsFieldTypes.INTEGER }]
           })).to.eql('boolean');
         expect(InputFieldDef
           .getDataTypeFromSchema({
@@ -120,10 +120,32 @@ describe('UIFieldDef related functionalities', () => {
           .getDataTypeFromSchema({
             tems: [
               { type: JsFieldTypes.BOOLEAN },
-              {type: JsFieldTypes.STRING}
+              { type: JsFieldTypes.STRING }
             ]
           }))
           .to.eql('string');
+      });
+    });
+    describe('getCreationPropsFromSchema', () => {
+      const { getCreationPropsFromSchema } = InputFieldDef;
+      it('should create the props properly', () => {
+        const props = getCreationPropsFromSchema({ type: 'array', name: 'test' });
+        expect(props).to.contains({
+          dataType: 'string',
+          format: 'text',
+          multiple: true,
+          name: 'test'
+        });
+        const selectProps =
+          getCreationPropsFromSchema({ type: 'string', name: 'test', enums: ['a', 'ba', 'ca'] });
+        expect(selectProps).to.contains({
+          dataType: 'string',
+          format: 'text',
+          multiple: false,
+          name: 'test',
+        });
+        expect(selectProps.options).to.eql(['a', 'ba', 'ca']);
+        expect(InputFieldDef(selectProps).control).to.eq('select');
       });
     });
   });
