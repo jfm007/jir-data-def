@@ -18,8 +18,6 @@ const { ObjectDef } = require('./objectDef');
 const DataDef = Stampit(Def)
   // uiConfig = null,
   .init(function ({ isFieldArrayItemDef = false }) {
-    //this.defType = defType;
-    //this.isFieldArray = DataDef.isFieldArray(this);
     this.isFieldArrayItemDef = isFieldArrayItemDef;
     this.runAllProcessors = DataDef.runAllProcessors(this);
     ObjectDef.init(this);

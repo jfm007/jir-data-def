@@ -122,7 +122,8 @@ describe('UIFieldDef related functionalities', () => {
               { type: JsFieldTypes.BOOLEAN },
               {type: JsFieldTypes.STRING}
             ]
-          })).to.eql('string');
+          }))
+          .to.eql('string');
       });
     });
   });

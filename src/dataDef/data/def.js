@@ -10,7 +10,7 @@ const {
   ResultsObj,
   RunInfo
 } = require('../utils');
-//const { createProcessor } = ProcessorsObj;
+
 const { DataDefType } = require('./enums');
 const isNotNilorEmpty = R.pipe(RA.isNilOrEmpty, R.not);
 /**
@@ -18,6 +18,7 @@ const isNotNilorEmpty = R.pipe(RA.isNilOrEmpty, R.not);
  */
 const Def = stampit(JsonSchema, ProcessorsObj, PathAndNameObj)
   .init(function ({ defType = DataDefType.FIELD, isFieldArrayItemDef = false }) {
+    this.isFieldArray = Def.isFieldArray(this);
     this.defType = defType;
     this.validateData = Def.validateData(this);
     if (isFieldArrayItemDef) this.isFieldArrayItemDef = isFieldArrayItemDef;
@@ -39,10 +40,7 @@ const Def = stampit(JsonSchema, ProcessorsObj, PathAndNameObj)
     initDef(props) {
       return Def(props);
     },
-    isFieldArray() {
-      return Def.isFieldArray(this);
-    },
-    createProcessor(processorConfig){
+    createProcessor(processorConfig) {
       return ProcessorsObj.createProcessor(processorConfig);
     }
   })
@@ -52,16 +50,18 @@ const Def = stampit(JsonSchema, ProcessorsObj, PathAndNameObj)
      * @param {*} objDef
      */
     isFieldArray(objDef) {
-      return Maybe.of(objDef)
-        .mapS(R.prop('items'))
-        .mapS(R.ifElse(R.is(Array), R.identity, R.of))
-        .mapS(R.all(
-          R.either(
-            R.propSatisfies(isNotNilorEmpty, 'properties'),
-            R.all(Def.isFieldArray)
-          )
-        ))
-        .orElse(false).join();
+      return () => {
+        return Maybe.of(objDef)
+          .mapS(R.prop('items'))
+          .mapS(R.ifElse(R.is(Array), R.identity, R.of))
+          .mapS(R.all(
+            R.either(
+              R.propSatisfies(isNotNilorEmpty, 'properties'),
+              R.all(Def.isFieldArray)
+            )
+          ))
+          .orElse(false).join();
+      };
     },
     /**
      * currently when the validate data is called, it will run all the processors of the all
