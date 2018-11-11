@@ -26,7 +26,7 @@ const nestedSchema = {
           type: STRING
         },
         state: {
-          enums: ['ACT', 'NSW', 'NT', 'VIC', 'WA', 'TAS']
+          enum: ['ACT', 'NSW', 'NT', 'VIC', 'WA', 'TAS']
         },
         email: {
           type: STRING,
@@ -89,7 +89,7 @@ const singleFieldArrayDef = {
       type: { enum: ['Home', 'Post', 'Work'] },
       addressLine1: { type: STRING },
       addressLine2: { type: STRING },
-      state: { enums: ['ACT', 'NSW', 'NT', 'VIC', 'WA', 'TAS'] },
+      state: { enum: ['ACT', 'NSW', 'NT', 'VIC', 'WA', 'TAS'] },
       intTest: { type: INTEGER }
     }
   }
@@ -169,7 +169,7 @@ const basicFieldArrayDef = {
           type: { enum: ['Home', 'Post', 'Work'] },
           addressLine1: { type: STRING },
           addressLine2: { type: STRING },
-          state: { enums: ['ACT', 'NSW', 'NT', 'VIC', 'WA', 'TAS'] }
+          state: { enum: ['ACT', 'NSW', 'NT', 'VIC', 'WA', 'TAS'] }
         }
       }
     },
@@ -198,7 +198,7 @@ const basicFieldArrayDef = {
               type: { enum: ['res', 'postal'] },
               addressLine1: { type: STRING },
               addressLine2: { type: STRING },
-              state: { enums: ['ACT', 'NSW', 'NT', 'VIC', 'WA', 'TAS'] }
+              state: { enum: ['ACT', 'NSW', 'NT', 'VIC', 'WA', 'TAS'] }
             }
           }
         }
@@ -277,7 +277,7 @@ exports.simpleNestedSchemaWithProcessors = {
       properties: {
         addressLine1: { type: STRING },
         addressLine2: { type: STRING },
-        state: { enums: ['ACT', 'NSW', 'NT', 'VIC', 'WA', 'TAS'] },
+        state: { enum: ['ACT', 'NSW', 'NT', 'VIC', 'WA', 'TAS'] },
         email: { type: STRING, format: EMAIL },
         postCode: { type: NUMBER },
         some2: { type: INTEGER }

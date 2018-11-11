@@ -12,7 +12,8 @@ const isNotNilOrEmpty = R.pipe(RA.isNilOrEmpty, R.not);
  */
 const JsonSchema = stampit({})
   .init(function(props){
-    const schema = R.pipe(getSchemaProps, setUpDefaultType)(props);
+    const schema = R.pipe(getSchemaProps,
+      setUpDefaultType)(props);
     Object.assign(this, { ... schema });
     this.jsvValidate = JsonSchema.jsvValidate(this);
   })

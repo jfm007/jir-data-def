@@ -45,8 +45,6 @@ describe('the DataDef factory', () => {
       expect(def.name).to.eql('def');
       const { diffAddresses, addresses } = def.properties;
       expect(addresses.isFieldArray()).to.eq(true);
-      //expect(addresses.defType).to.eq(DataDefType.FIELD_ARRAY);
-      //expect(R.is(Array, addresses.items)).to.eq(true);
       expect(addresses.items[0].name).to.eq('addresses');
       expect(diffAddresses.isFieldArray()).to.eq(true);
       expect(R.map((item) => item.name, diffAddresses.items))

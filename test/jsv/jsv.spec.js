@@ -9,7 +9,7 @@ describe('jsv', () => {
     properties: {
       smaller: {
         type: 'number',
-        enums: [2, 4, 6],
+        enum: [2, 4, 6],
         maximum: { $data: '1/larger' }
       },
       larger: { type: 'number' },
@@ -39,6 +39,15 @@ describe('jsv', () => {
         {
           alert: [{ message: 'should be <= 6', severity: 'error' }],
           path: 'smaller',
+        },
+        {
+          alert:[
+            {
+              message: 'should be equal to one of the allowed values',
+              severity: 'error'
+            }
+          ],
+          path: 'smaller'
         },
         {
           alert: [{ message: 'should be string', severity: 'error' }],

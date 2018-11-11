@@ -23,7 +23,7 @@ const flatSchema = {
       type: STRING
     },
     state: {
-      enums: ['ACT', 'NSW', 'NT', 'VIC', 'WA', 'TAS']
+      enum: ['ACT', 'NSW', 'NT', 'VIC', 'WA', 'TAS']
     },
     postCode: {
       type: NUMBER
@@ -60,7 +60,7 @@ const flatSchema = {
 //               type: STRING
 //             },
 //             state: {
-//               enums: ['ACT', 'NSW', 'NT', 'VIC', 'WA', 'TAS']
+//               enum: ['ACT', 'NSW', 'NT', 'VIC', 'WA', 'TAS']
 //             },
 //           }
 //         }

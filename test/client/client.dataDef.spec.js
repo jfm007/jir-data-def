@@ -204,4 +204,13 @@ describe('the DataDef factory', () => {
       });
     });
   });
+  describe('constructor', ()=>{
+    it('should construct data def and all its descendents correctly', ()=>{
+      const def = DataDef({name: 'name', ...nestedSchema});
+      expect(def.properties.address.properties.state.enum).to.eqls([
+        'ACT', 'NSW', 'NT', 'VIC', 'WA', 'TAS'
+      ]);
+      //console.log(JSON.stringify(def.properties.address.properties.state));
+    });
+  });
 });

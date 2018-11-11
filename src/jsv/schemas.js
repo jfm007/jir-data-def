@@ -5,7 +5,7 @@ exports.JsKeywords = {
   TYPE: 'type',
   PROPERTIES: 'properties',
   ITEMS: 'items',
-  ENUMS: 'enums'
+  ENUM: 'enum'
 };
 
 exports.JsFieldTypes = {

@@ -118,7 +118,7 @@ describe('UIFieldDef related functionalities', () => {
           })).to.eql('string');
         expect(InputFieldDef
           .getDataTypeFromSchema({
-            tems: [
+            items: [
               { type: JsFieldTypes.BOOLEAN },
               { type: JsFieldTypes.STRING }
             ]
@@ -137,7 +137,7 @@ describe('UIFieldDef related functionalities', () => {
           name: 'test'
         });
         const selectProps =
-          getCreationPropsFromSchema({ type: 'string', name: 'test', enums: ['a', 'ba', 'ca'] });
+          getCreationPropsFromSchema({ type: 'string', name: 'test', enum: ['a', 'ba', 'ca'] });
         expect(selectProps).to.contains({
           dataType: 'string',
           format: 'text',

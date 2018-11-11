@@ -175,7 +175,7 @@ describe('the ProcessorsObj factory', ()=>{
                 type: STRING
               },
               state: {
-                enums: ['ACT', 'NSW', 'NT', 'VIC', 'WA', 'TAS']
+                enum: ['ACT', 'NSW', 'NT', 'VIC', 'WA', 'TAS']
               },
               email: {
                 type: STRING,

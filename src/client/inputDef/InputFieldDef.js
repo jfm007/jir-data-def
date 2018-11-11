@@ -150,7 +150,7 @@ const InputFieldDef = stampit(PathAndNameObj, InputOptionsDef, InputBooleanDef, 
     },
     /**
      * used to get the options for creating fieldDef
-     * @param {*} schema 
+     * @param {*} schema
      */
     getCreationPropsFromSchema(schema) {
       return Maybe.of(schema)
@@ -161,7 +161,7 @@ const InputFieldDef = stampit(PathAndNameObj, InputOptionsDef, InputBooleanDef, 
             name,
             dataType: getDataTypeFromSchema(schema),
             format: getFormatFromSchema(schema),
-            options: schema.enums,
+            options: schema.enum,
             description,
             multiple: R.propEq('type', 'array', schema),
             schema

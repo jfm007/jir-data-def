@@ -3,8 +3,6 @@ const R = require('ramda');
 const RA = require('ramda-adjunct');
 const {
   Maybe,
-  //ResultsObj,
-  //RunInfo
 } = require('../utils');
 
 const isNotNilorEmpty = R.pipe(RA.isNilOrEmpty, R.not);
