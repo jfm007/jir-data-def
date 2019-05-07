@@ -3,90 +3,79 @@ const expect = require('chai').expect;
 const { DataDef } = require('./utils');
 //const { ProcessorTypes } = require('../../src/processor');
 const { nestedSchema,
-  v1, v2, v3, cond1, cond2,
   simpleNestedSchemaWithProcessors,
 } = require('./client.dataDefinitions');
 //const { Validation, Compute, Condition } = ProcessorTypes;
 describe('the DataDef factory', () => {
   describe('validateData', () => {
     it('should return the result of the validation for dataDef build from schema and processors', () => {
-      const input = {
-        kk: 'asdf',
-        address: {
-          addressLine1: '8 Dumas'
-        },
-        other: {
-          weight: 180,
-          age: 200,
-        }
-      };
-      const def = DataDef({
-        name: 'test',
-        ...nestedSchema,
-        processors: [cond1, cond2, v1, v2, v3]
-      });
-      const result = def.validateData(input);
-      expect(result).to.eql({
-        data: {
-          address: {
-            addressLine1: '8 Dumas'
-          },
-          kk: 'asdf',
-          lastName: 'Zheng',
-          other: {
-            age: 200,
-            weight: 180
-          }
-        },
-        result: {
-          firstName: {
-            alert: [
-              {
-                message: 'firstName cannot be null',
-                severity: 'error'
-              }
-            ],
-            path: 'firstName',
-          },
-          kk: {
-            alert: [
-              {
-                message: 'should be integer',
-                severity: 'error'
-              }
-            ],
-            path: 'kk',
+      // const input = {
+      //   kk: 'asdf',
+      //   address: {
+      //     addressLine1: '8 Dumas',
+      //     other: {
+      //       age: 200,
+      //     }
+      //   },
+      // };
+      // const def = DataDef({
+      //   name: 'test',
+      //   ...nestedSchema,
+      //   processors: [cond1, cond2, v1, v2, v3]
+      // });
+      // const result = def.validateData(input);
+      // expect(result).to.eql({
+      //   data: {
+      //     address: {
+      //       addressLine1: '8 Dumas',
+      //       other: {
+      //         age: 200,
+      //       }
+      //     },
+      //     kk: 'asdf',
+      //     lastName: 'Zheng',
+      //   },
+      //   result: {
+      //     firstName: {
+      //       alert: [
+      //         {
+      //           message: 'firstName cannot be null',
+      //           severity: 'error'
+      //         }
+      //       ],
+      //       path: 'firstName',
+      //     },
+      //     kk: {
+      //       alert: [
+      //         {
+      //           message: 'should be integer',
+      //           severity: 'error'
+      //         }
+      //       ],
+      //       path: 'kk',
 
-          },
-          lastName: {
-            isFulFilled: true,
-            path: 'lastName',
-            state: {
-              display: true,
-              readonly: true
-            },
-            value: 'Zheng'
-          },
-          'other.age': {
-            alert: [
-              {
-                message: 'should be <= 120',
-                severity: 'error'
-              }
-            ],
-            path: 'other.age',
+      //     },
+      //     lastName: {
+      //       isFulFilled: true,
+      //       path: 'lastName',
+      //       state: {
+      //         display: true,
+      //         readonly: true
+      //       },
+      //       value: 'Zheng'
+      //     },
+      //     'address.other.age': {
+      //       alert: [
+      //         {
+      //           message: 'should be <= 120',
+      //           severity: 'error'
+      //         }
+      //       ],
+      //       path: 'address.other.age',
 
-          },
-          'other.weight': {
-            isFulFilled: true,
-            path: 'other.weight',
-            state: {
-              display: true,
-              readonly: false
-            }
-          }
-        }
-      });
+      //     },
+      //   }
+      // });
     });
     it('should return the result of the validation for dataDef build from full def', () => {
       const input = {
@@ -211,6 +200,100 @@ describe('the DataDef factory', () => {
         'ACT', 'NSW', 'NT', 'VIC', 'WA', 'TAS'
       ]);
       //console.log(JSON.stringify(def.properties.address.properties.state));
+    });
+  });
+  describe('validateData', ()=>{
+    it('should validate the input properly', ()=>{
+      const data = {
+        firstName: 'fakeName',
+        kk: 'wrong',
+        address: {
+          state: 'fakeState',
+          email: 'wrongEmail',
+          other: {
+            date: 'FakeDate',
+            badGuy: 'Fa',
+            age: -1,
+            weight: 300
+          }
+        },
+        
+      };
+      const def = DataDef({name: 'name', ...nestedSchema});
+      var result = def.validateData(data);
+      const expected = {
+        'data': {
+          'address': {
+            'email': 'wrongEmail',
+            'other': {
+              'age': -1,
+              'badGuy': 'Fa',
+              'date': 'FakeDate',
+              'weight': 300
+            },
+            'state': 'fakeState'
+          },
+          'firstName': 'fakeName',
+          'kk': 'wrong'
+        },
+        'result': {
+          'address.email': {
+            'alert': [
+              {
+                'message': 'should match format "email"',
+                'severity': 'error'
+              }
+            ],
+            'path': 'address.email'
+          },
+          'address.other.age': {
+            'alert': [
+              {
+                'message': 'should be >= 0',
+                'severity': 'error'
+              }
+            ],
+            'path': 'address.other.age'
+          },
+          'address.other.badGuy': {
+            'alert': [
+              {
+                'message': 'should be boolean',
+                'severity': 'error'
+              }
+            ],
+            'path': 'address.other.badGuy'
+          },
+          'address.other.weight': {
+            'alert': [
+              {
+                'message': 'should be <= 240',
+                'severity': 'error'
+              }
+            ],
+            'path': 'address.other.weight'
+          },
+          'address.state': {
+            'alert': [
+              {
+                'message': 'should be equal to one of the allowed values',
+                'severity': 'error'
+              }
+            ],
+            'path': 'address.state'
+          },
+          'kk': {
+            'alert': [
+              {
+                'message': 'should be integer',
+                'severity': 'error'
+              }
+            ],
+            'path': 'kk'
+          }
+        }
+      };
+      expect(result).to.eqls(expected);
     });
   });
 });

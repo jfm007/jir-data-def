@@ -35,24 +35,24 @@ const nestedSchema = {
         postCode: {
           type: NUMBER
         },
-      }
-    },
-    other: {
-      properties: {
-        birthday: {
-          format: DATE
-        },
-        badGuy: {
-          type: BOOLEAN
-        },
-        age: {
-          type: INTEGER, minimum: 0, maximum: 120
-        },
-        weight: {
-          type: INTEGER, minimum: 0, maximum: 240
+        other: {
+          properties: {
+            birthday: {
+              format: DATE
+            },
+            badGuy: {
+              type: BOOLEAN
+            },
+            age: {
+              type: INTEGER, minimum: 0, maximum: 120
+            },
+            weight: {
+              type: INTEGER, minimum: 0, maximum: 240
+            }
+          }
         }
       }
-    }
+    },
   }
 };
 exports.nestedSchema = nestedSchema;

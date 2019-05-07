@@ -75,7 +75,39 @@ const ResultsObj = stampit({})
         })
         .orElse(resultsObj).join();
     }),
-
+    /**
+     * change the path from node.node1.1.field1 to node.node1.[1].field1
+     * @param rsltObj: a Result obj of shape of ResultObj
+     */
+    normArrayItemPaths: (rsltObj) => {
+      const { result } = rsltObj;
+      var rslt = Maybe.of(result)
+        .mapS(R.toPairs)
+        .mapS(R.map(pair=>{
+          return [
+            ResultsObj.normArrayItemPath(pair[0]),
+            {
+              ...pair[1],
+              path: ResultsObj.normArrayItemPath(pair[1].path)
+            }
+          ];
+        })).mapS(R.fromPairs).orElse({}).join();
+      return {
+        ...rsltObj,
+        result: rslt
+      };
+    },
+    /**
+     * @param path: the path to norm
+     */
+    normArrayItemPath: (path) => Maybe.of(path)
+      .mapS(R.replace(/\.(\d+)\.|\.(\d+)$/g, '.[$1$2].'))
+      .mapS(R.ifElse(R.match(/\.(\d+)\./), 
+        R.replace(/\.(\d+)\./g, '.[$1].'), R.identity))
+      .mapS(R.ifElse(R.both(R.endsWith('.'), R.pipe(R.length, R.lt(1))), 
+        R.dropLast(1), 
+        R.identity))
+      .orElse(null).join(),
     /**
     *
     * @param parentPath
@@ -128,7 +160,7 @@ const ResultsObj = stampit({})
 exports.ResultsObj = ResultsObj;
 
 /**
- * used to get he merged data from the target and source - to be improved
+ * used to get he merged data from the target and source - to be imroved
  * @param {*} target
  * @param {*} source
  */

@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const R = require('ramda');
 const { ResultsObj, ProcessResult, ObjWithAlert, AlertSeverity } = require('./composables');
-const { updateResult, isResultObj, getResultObj} = ResultsObj;
+const { updateResult, isResultObj, getResultObj, normArrayItemPath, normArrayItemPaths } = ResultsObj;
 const { INFO, ERROR } = AlertSeverity;
 const { getLens } = require('../../src/utils');
 const { prefixParentPathToProcessingResults } = ResultsObj;
@@ -113,6 +113,58 @@ describe('ResultsObj factory and methods', ()=>{
             },
             'path1.path3': {
               path: 'path1.path3', value: 'deeppath',
+            }
+          }
+        });
+      });
+    });
+    describe('normArrayItemPath', ()=>{
+      it('should turn idx to [idx] format in path', ()=>{
+        var rslt = normArrayItemPath('a.b21.1.p.23.0.h1.1');
+        expect(rslt).to.eq('a.b21.[1].p.[23].[0].h1.[1]');
+      });
+    });
+    describe('normArrayItemPaths', ()=>{
+      it('should turn all the results\' path idx to [idx]', ()=>{
+        var result = {
+          data: { somedata: 1},
+          result: {
+            p1: {
+              path: 'p1',
+              message: 'something'
+            },
+            'p2.1.e':{
+              path: 'p2.1.e',
+              message: 'message2'
+            },
+            'p3.0.e.1': {
+              path: 'p3.0.e.1',
+              message: 'message3'
+            },
+            'p4.0.1.e.1': {
+              path: 'p4.0.1.e.1',
+              message: 'message4'
+            }
+          }
+        };
+        expect(normArrayItemPaths(result)).to.eql({
+          data: { somedata: 1},
+          result: {
+            p1: {
+              path: 'p1',
+              message: 'something'
+            },
+            'p2.[1].e':{
+              path: 'p2.[1].e',
+              message: 'message2'
+            },
+            'p3.[0].e.[1]': {
+              path: 'p3.[0].e.[1]',
+              message: 'message3'
+            },
+            'p4.[0].[1].e.[1]': {
+              path: 'p4.[0].[1].e.[1]',
+              message: 'message4'
             }
           }
         });
