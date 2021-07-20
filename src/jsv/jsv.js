@@ -1,4 +1,5 @@
 const Ajv = require('ajv');
+const addFormats = require('ajv-formats');
 const stamp = require('@stamp/it');
 const R = require('ramda');
 const RA = require('ramda-adjunct');
@@ -9,8 +10,10 @@ const Jsv = stamp()
   .init(function () {
     this.ajv = new Ajv({
       allErrors: true,
+      strictSchema: false,
       $data: true,
     });
+    addFormats(this.ajv);
     const { validate, errors, processResults, validateForResult } = Jsv;
     this.validate = validate(this);
     this.errors = errors(this);

@@ -8,8 +8,13 @@ const { sanitizePath } = require('../utils');
  * Object factory to create Path obj
  */
 const PathObject = Stamp({
-  init({ path = null, dataPath = null, optional =false, ...props}){
-    this.path = path ? sanitizePath(path) : sanitizePath(dataPath);
+  init({ path = null, 
+    dataPath = null, 
+    instancePath = null, 
+    optional =false, ...props}){
+    this.path = (path ? sanitizePath(path) 
+      : (dataPath?sanitizePath(dataPath)
+        :sanitizePath(instancePath)));
     if(RA.isNilOrEmpty(this.path)) this.path = '.';
     if(optional)
       Object.assign(this, props);

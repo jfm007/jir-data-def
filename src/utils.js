@@ -100,7 +100,8 @@ exports.pluckNilValue = R.pipe(R.toPairs, R.reject((item) => R.isNil(item[1])), 
  */
 const sanitizePath = (path) => {
   return Maybe.of(path)
-    .mapS(R.replace(/\[|(\].)/g, '.'))
+    .mapS(R.replace('#', ''))
+    .mapS(R.replace(/\/|\[|(\].)/g, '.'))
     .mapS(R.pipe(R.split('.'),
       R.map(R.trim),
       R.reject(RA.isNilOrEmpty),

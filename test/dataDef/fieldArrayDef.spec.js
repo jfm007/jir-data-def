@@ -63,7 +63,7 @@ describe('the FieldArray related functionality', () => {
             },
             '1.intTest': {
               alert: [
-                { message: 'should be integer', severity: 'error' }
+                { message: 'must be integer', severity: 'error' }
               ],
               path: '1.intTest',
 
@@ -90,7 +90,7 @@ describe('the FieldArray related functionality', () => {
             '3.type': {
               alert: [
                 {
-                  message: 'should be equal to one of the allowed values',
+                  message: 'must be equal to one of the allowed values',
                   severity: 'error'
                 }
               ],
@@ -161,7 +161,7 @@ describe('the FieldArray related functionality', () => {
           },
           'addresses.1.intTest': {
             alert: [
-              { message: 'should be integer', severity: 'error' }
+              { message: 'must be integer', severity: 'error' }
             ],
             path: 'addresses.1.intTest',
 
@@ -176,7 +176,7 @@ describe('the FieldArray related functionality', () => {
           'addresses.3.type': {
             alert: [
               {
-                message: 'should be equal to one of the allowed values',
+                message: 'must be equal to one of the allowed values',
                 severity: 'error'
               }
             ],
@@ -230,7 +230,7 @@ describe('the FieldArray related functionality', () => {
           'clientAddresses.0.type':{
             alert: [
               {
-                message: 'should be equal to one of the allowed values',
+                message: 'must be equal to one of the allowed values',
                 severity: 'error'
               }
             ],
@@ -249,7 +249,7 @@ describe('the FieldArray related functionality', () => {
           },
           'clientAddresses.1.addresses.0.type':{
             alert: [{
-              message: 'should be equal to one of the allowed values',
+              message: 'must be equal to one of the allowed values',
               severity: 'error',
             }],
             path: 'clientAddresses.1.addresses.0.type'

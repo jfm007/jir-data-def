@@ -102,7 +102,7 @@ describe('the DataDef factory', () => {
           kk: {
             alert: [
               {
-                message: 'should be integer',
+                message: 'must be integer',
                 severity: 'error'
               }
             ],
@@ -121,7 +121,7 @@ describe('the DataDef factory', () => {
           'other.age': {
             alert: [
               {
-                message: 'should be <= 120',
+                message: 'must be <= 120',
                 severity: 'error'
               }
             ],
@@ -199,7 +199,7 @@ describe('the DataDef factory', () => {
           kk: {
             alert: [
               {
-                message: 'should be integer',
+                message: 'must be integer',
                 severity: 'error'
               }
             ],
@@ -235,7 +235,7 @@ describe('the DataDef factory', () => {
                 severity: 'error'
               },
               {
-                message: 'should be number',
+                message: 'must be number',
                 severity: 'error'
               }
             ],
@@ -245,7 +245,7 @@ describe('the DataDef factory', () => {
           'other.age': {
             alert: [
               {
-                'message': 'should be <= 120',
+                'message': 'must be <= 120',
                 'severity': 'error'
               }
             ],

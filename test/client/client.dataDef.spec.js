@@ -137,7 +137,7 @@ describe('the DataDef factory', () => {
           kk: {
             alert: [
               {
-                message: 'should be integer',
+                message: 'must be integer',
                 severity: 'error'
               }
             ],
@@ -172,7 +172,7 @@ describe('the DataDef factory', () => {
                 severity: 'error'
               },
               {
-                message: 'should be number',
+                message: 'must be number',
                 severity: 'error'
               }
             ],
@@ -182,7 +182,7 @@ describe('the DataDef factory', () => {
           'other.age': {
             alert: [
               {
-                'message': 'should be <= 120',
+                'message': 'must be <= 120',
                 'severity': 'error'
               }
             ],
@@ -240,7 +240,7 @@ describe('the DataDef factory', () => {
           'address.email': {
             'alert': [
               {
-                'message': 'should match format "email"',
+                'message': 'must match format "email"',
                 'severity': 'error'
               }
             ],
@@ -249,7 +249,7 @@ describe('the DataDef factory', () => {
           'address.other.age': {
             'alert': [
               {
-                'message': 'should be >= 0',
+                'message': 'must be >= 0',
                 'severity': 'error'
               }
             ],
@@ -258,7 +258,7 @@ describe('the DataDef factory', () => {
           'address.other.badGuy': {
             'alert': [
               {
-                'message': 'should be boolean',
+                'message': 'must be boolean',
                 'severity': 'error'
               }
             ],
@@ -267,7 +267,7 @@ describe('the DataDef factory', () => {
           'address.other.weight': {
             'alert': [
               {
-                'message': 'should be <= 240',
+                'message': 'must be <= 240',
                 'severity': 'error'
               }
             ],
@@ -276,7 +276,7 @@ describe('the DataDef factory', () => {
           'address.state': {
             'alert': [
               {
-                'message': 'should be equal to one of the allowed values',
+                'message': 'must be equal to one of the allowed values',
                 'severity': 'error'
               }
             ],
@@ -285,7 +285,7 @@ describe('the DataDef factory', () => {
           'kk': {
             'alert': [
               {
-                'message': 'should be integer',
+                'message': 'must be integer',
                 'severity': 'error'
               }
             ],

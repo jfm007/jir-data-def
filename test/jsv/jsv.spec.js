@@ -30,27 +30,27 @@ describe('jsv', () => {
       expect(validate(numberSchema, 'sdf')).to.eq(false);
       expect(validate(stringSchema, undefined)).to.eq(false);
       expect(processResults()).to.eql([{
-        alert: [{ message: 'should be number', severity: 'error' }],
+        alert: [{ message: 'must be number', severity: 'error' }],
         path: '.',
 
       }]);
       validate(simpleObjSchema, { smaller: 7, larger: 6, else: 1 });
       expect(processResults()).to.eql([
         {
-          alert: [{ message: 'should be <= 6', severity: 'error' }],
+          alert: [{ message: 'must be equal to one of the allowed values', severity: 'error' }],
           path: 'smaller',
         },
         {
           alert:[
             {
-              message: 'should be equal to one of the allowed values',
+              message: 'must be <= 6',
               severity: 'error'
             }
           ],
           path: 'smaller'
         },
         {
-          alert: [{ message: 'should be string', severity: 'error' }],
+          alert: [{ message: 'must be string', severity: 'error' }],
           path: 'else',
         },
       ]);
